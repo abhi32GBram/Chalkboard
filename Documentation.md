@@ -1,4 +1,4 @@
-# Setting Up Backend & Authentication 
+> # Setting Up Backend & Authentication 
 
 - Convex is  a database and comprehensive cloud backend solution.
 - This means it goes beyond just storing data (like a traditional database) to include server functions, backend functionality, and the interface that communicates with your application.
@@ -10,7 +10,8 @@
 - This ensures that all users see the same data and that changes made by one user are immediately visible to others.
 - For setting up Convex with Next.js, you can refer to the quickstart guide provided in the official Convex documentation: [https://docs.convex.dev/quickstart/nextjs](https://docs.convex.dev/quickstart/nextjs).
 
-# Using Clerk for Authentication
+---
+> # Using Clerk for Authentication
 
 - Clerk is a service that helps you set up and manage authentication in your application.
 - Authentication is the process of verifying who a user is before they can access certain parts of your application.
@@ -22,7 +23,7 @@
 
 --- 
 
-# Dashboard Layout and Organization Workspaces
+># Dashboard Layout and Organization Workspaces
 
 ## Integration of Clerk's Organizations Options
 
@@ -56,3 +57,45 @@
 - Incorporated wireframes for key components of the application, including the organization sidebar, main sidebar, dashboard space, navbar, search bar, and the Clerk user button for signup/signin.
 - These wireframes serve as a visual blueprint, offering insights into the application's layout and workflow, which aids stakeholders in understanding the design rationale and user journey.
 - Ensured that the wireframes are responsive, accommodating various screen sizes and orientations for an optimal viewing experience across different devices.
+
+--- 
+> # Navbar & Search Input 
+
+## Installing - React Query-String & `useHooks-ts` Package
+
+Install using -  `npm install query-string`
+
+* The `query-string` package is a lightweight JavaScript utility that assists with parsing and stringifying URL query strings.
+* It is especially handy when working with URL query parameters in JavaScript applications.
+
+- **Parsing**: Transform a query string into a JavaScript object.
+- **Stringifying**: Convert a JavaScript object into a query string.
+- **Extraction**: Retrieve a query string from a given URL.
+
+Install using -  `npm i usehooks-ts`.
+
+- **TypeScript-Based**: Written in TypeScript for strong typing support.
+- **Custom Hooks**: Offers a variety of ready-to-use React hooks for common tasks.
+- **Lightweight**: No additional dependencies, reducing bundle size.
+- **Documentation**: Comprehensive usage examples and explanations provided.
+- **Community Support**: Actively maintained with a growing community of contributors.
+- **Resources**: More information available on the [official website](https://usehooks-ts.com/) and [GitHub repository](https://github.com/juliencrn/usehooks-ts).
+
+
+### Responsive Navbar
+- Implemented a responsive navigation bar that adapts to various screen sizes.
+
+### Search Bar Functionality
+- Integrated a search bar with a  500ms debounce mechanism to improve performance and user experience.
+- Utilized `react-query-string` to process user input and perform direct queries based on the search criteria.
+
+### Organization Sidebar
+- Enhanced the organization sidebar with additional functionality, including the ability to manage organizations and invite members.
+
+### Board Navigation Buttons
+- Added "Favorites Board" and "Team Boards" buttons for easy navigation between different types of boards.
+- Implemented quick navigation using `useSearchParams` from Next.js to update the URL query parameters without requiring a full page reload.
+
+
+
+
