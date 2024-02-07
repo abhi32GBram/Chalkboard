@@ -96,6 +96,30 @@ Install using -  `npm i usehooks-ts`.
 - Added "Favorites Board" and "Team Boards" buttons for easy navigation between different types of boards.
 - Implemented quick navigation using `useSearchParams` from Next.js to update the URL query parameters without requiring a full page reload.
 
+---
+> # Mutations from Convex to make New Boards 
 
+### Commit Summary: Adding New Board Feature
 
+Here are the points revised to sound more professional:
 
+#### Convex Mutations Integration
+- This commit introduces the functionality to instantiate new boards via mutations leveraging Convex's robust toolkit for serverless applications.
+- Mutations represent data manipulation operations executed on the server, enabling dynamic board creation within the user's dashboard.
+
+#### Mutation Operations Capabilities
+- Beyond the board creation mutation, this commit fortifies the backend to fully support mutations, ensuring the application can process data modification requests.
+- The server-side logic has been optimized to handle such requests, guaranteeing a responsive and reliable user experience.
+
+#### Enhanced Create Board Button
+- The "Create Board" button on the empty board page has been enhanced to initiate a mutation request upon user interaction.
+- This action results in the creation of a new board linked to the user's organization, streamlining the board addition process.
+
+#### State Management Custom Hook
+- A custom hook has been crafted to oversee the state of the "Create Board" button and associated UI elements during the mutation lifecycle.
+- This hook encapsulates the `useMutation` hook from Convex, introducing state management features like loading indicators and disabling functionalities.
+- Such enhancements offer immediate feedback to users, mitigating the risk of duplicate submissions and elevating the user interaction quality.
+
+#### Integration of Sonner for Toast Notifications
+- The commit seamlessly integrates the Sonner component from ShadcnUI, a specialized tool for presenting toast notifications.
+- Sonner provides real-time updates to users regarding the success or failure of board creations, enriching the user experience with timely and visually engaging feedback.
