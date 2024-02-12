@@ -1,8 +1,14 @@
 "use client"
 // Import necessary components
+
+
+import { useQuery } from "convex/react";
 import { EmptyBoard } from "./empty-board";
 import { EmptyFavourites } from "./empty-favourites";
 import { EmptySearch } from "./empty-search";
+import { api } from "@/convex/_generated/api";
+import { flightRouterStateSchema } from "next/dist/server/app-render/types";
+import { BoardCard } from "./board-card";
 
 // Define the props for the BoardList component
 interface BoardListProps {
@@ -15,8 +21,15 @@ interface BoardListProps {
 
 // Define the BoardList functional component
 export const BoardList = ({ orgId, query }: BoardListProps) => {
-    // Placeholder array for data, to be replaced with actual API calls
-    const data = [];
+
+    const data = useQuery(api.boards.get, { orgId })
+    if (data === undefined) {
+        return (
+            <div>
+                Loading Boards...
+            </div>
+        )
+    }
 
     // Check if there is no data and a search query is present
     if (!data?.length && query.search) {
@@ -39,8 +52,24 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
     // Render the board list with the query object for debugging purposes
     return (
         <div>
-            {/* Display the query object as a JSON string */}
-            {JSON.stringify(query)}
+            <h2 className="text-4xl font-semibold">
+                {query.favourites ? "Favourite Boards" : "Team Boards"}
+            </h2>
+            <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 mt-8 pb-10">
+                {data?.map((board) => (
+                    <BoardCard
+                        key={board._id}
+                        id={board._id}
+                        title={board.title}
+                        imageUrl={board.imageUrl}
+                        authorId={board.authorId}
+                        authorName={board.authorName}
+                        createdAt={board._creationTime}
+                        orgId={board.orgId}
+                        isFavourite={false}
+                    />
+                ))}
+            </div>
         </div>
     );
 };
