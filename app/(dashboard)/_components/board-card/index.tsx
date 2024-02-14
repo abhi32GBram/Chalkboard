@@ -26,3 +26,4 @@ export const BoardCard = ({ id, title, imageUrl, authorId, authorName, createdAt
         </Link>
     )
 }
+//
