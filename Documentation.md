@@ -123,3 +123,56 @@ Here are the points revised to sound more professional:
 #### Integration of Sonner for Toast Notifications
 - The commit seamlessly integrates the Sonner component from ShadcnUI, a specialized tool for presenting toast notifications.
 - Sonner provides real-time updates to users regarding the success or failure of board creations, enriching the user experience with timely and visually engaging feedback.
+
+---
+
+> # Board Listings and Cards with Skeleton Loaders 
+
+# `date-fns`
+
+* `date-fns` is a modern JavaScript date utility library that provides a comprehensive set of functions for manipulating JavaScript dates in a browser & Node.js environment. 
+* It offers a functional programming approach to handling dates and times, which can lead to more readable and maintainable code.
+* `npm i date-fns` to install this package
+
+## Key Features
+
+- **Immutable**: All functions return a new date instance instead of changing the passed one, making it safe to use without side effects.
+- **Tree Shaking**: The package supports tree shaking, which means you can import only the functions you need, reducing the size of your bundle.
+- **Modular**: Functions are organized into separate modules, allowing you to install and import only what you need.
+- **Locale Support**: It includes support for internationalization (i18n) and localization (l10n), enabling you to format dates according to different languages and regions.
+- **Chaining**: Many functions allow chaining, which can make your code more concise and easier to read.
+- **TypeScript Support**: The package comes with TypeScript definitions, making it suitable for projects using TypeScript.
+
+
+## Board Cards Layout
+
+* Implemented a dynamic layout for displaying board cards on the frontend. 
+* This layout is designed to adapt to the data structure provided by the Convex backend service. 
+* The layout inference process involves parsing the JSON response from the backend and dynamically generating the UI components accordingly.
+
+## Card Creation Timestamps
+
+* Utilizing the `date-fns` library, we have integrated timestamps within each card's footer to display the creation date and time.
+*  This feature allows users to easily identify when a particular card was created, whether by themselves or another user.
+
+
+## Create Board Button
+
+* A dedicated "Create Board" button has been added to the user interface. 
+* When clicked, this button triggers the `useMutation` API call to the backend, which creates a new board entry.
+* Once the operation is successful, the newly created board is rendered on the screen in real-time.
+
+## Toast Notifications
+
+* Toast notifications have been incorporated using the `sonner` component from the `shadcnui` library.
+* These notifications appear when the "Create Board" button is pressed, providing users with feedback on the success or failure of their action.
+
+## Skeleton Loaders
+
+* Skeleton loaders have been added to the boards page to handle cases where the user's internet connection is unstable.
+* These loaders, also sourced from `shadcnui`, provide a placeholder for the actual content, giving the impression of a smooth loading experience even under less than ideal network conditions.
+
+## Add to Favourites Button
+
+* An "Add to Favourites" button has been introduced, allowing users to mark specific boards as favorites.
+*  This feature is purely frontend-based for now, with conditional styling applied to indicate the favorite status.
