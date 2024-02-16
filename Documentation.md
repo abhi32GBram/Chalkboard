@@ -143,7 +143,6 @@ Here are the points revised to sound more professional:
 - **Chaining**: Many functions allow chaining, which can make your code more concise and easier to read.
 - **TypeScript Support**: The package comes with TypeScript definitions, making it suitable for projects using TypeScript.
 
-
 ## Board Cards Layout
 
 * Implemented a dynamic layout for displaying board cards on the frontend. 
@@ -176,3 +175,31 @@ Here are the points revised to sound more professional:
 
 * An "Add to Favourites" button has been introduced, allowing users to mark specific boards as favorites.
 *  This feature is purely frontend-based for now, with conditional styling applied to indicate the favorite status.
+
+--- 
+> # Operations on Board Card (Copy Board Link, Update Title, Deleting Board)
+
+
+### Click Dialog Actions Card
+
+
+
+- **Copy Board Link**: Users can easily copy the URL of the board to share with others or to access it later.
+- **Update Title**: The title of the board can be updated directly from the card, allowing for quick changes without navigating away from the current view.
+- **Delete Board**: Users have the option to delete the entire board if it is no longer needed. This action will prompt a confirmation dialog to ensure the user's intention is clear.
+
+### Mutation Functions for Convex DB
+
+* To support the instantaneous performance of these actions on the board card, mutation functions have been added to the Convex DB.
+*  These functions are designed to handle the creation, updating, and deletion of board data in real-time, ensuring that the user interface remains responsive and up-to-date with the underlying data.
+
+### Modals and Dialogs from ShadcnUI
+
+* The user interface for these actions has been enhanced using modals and dialogs from the ShadcnUI library.
+*  These components provide a clean and intuitive way for users to interact with the board card, offering a consistent and modern look and feel.
+
+### Modal-Provider for Conditional Rendering
+
+* To prevent hydration errors, a modal-provider has been added to the application.
+* This provider is responsible for conditionally rendering modals based on the user's actions.
+*  By doing so, it ensures that modals are only rendered when necessary, reducing the likelihood of encountering issues related to server-side rendering versus client-side rendering discrepancies.
