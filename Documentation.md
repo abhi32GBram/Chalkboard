@@ -203,3 +203,36 @@ Here are the points revised to sound more professional:
 * To prevent hydration errors, a modal-provider has been added to the application.
 * This provider is responsible for conditionally rendering modals based on the user's actions.
 *  By doing so, it ensures that modals are only rendered when necessary, reducing the likelihood of encountering issues related to server-side rendering versus client-side rendering discrepancies.
+
+--- 
+
+> # Functionality to Favourite/Unfavourite Boards
+
+
+### Favouriting and Unfavouriting Boards
+
+- **Favouriting**: To mark a board as a favourite, simply click on the star icon on the card. The star will fill in, indicating that the board has been added to your favourites.
+- **Unfavouriting**: If you wish to remove a board from your favourites, click on the filled-in star icon. The star will revert to an empty state, signifying that the board is no longer marked as a favourite.
+
+**Note**: As of the current release, while the board can be marked as a favourite, it is not yet displayed in the dedicated favourites route. This feature is planned for a future update.
+
+### Database Changes for Favourited Boards
+
+* To support the new favouriting functionality, we have created a table specifically for storing information about favourited boards.
+* This table is linked to the user, board, and organization using a combination of `userId`, `boardId`, and `orgId`. 
+* This structure allows for efficient querying and management of favourited boards.
+
+### Conditional Rendering of Favourite Button
+
+* The state of the favourite button on the board card is now conditionally rendered based on whether the board is marked as a favourite.
+*  This means that the star icon will reflect the current favourite status of the board, providing users with a clear visual indication of their favourite boards.
+
+### Validations and Error Handling
+
+To ensure the reliability and robustness of the new favouriting feature, we have implemented validations and error handling on the frontend. This includes:
+
+- **Input Validation**: The system checks for valid input before processing the favouriting action, preventing any invalid operations.
+- **Error Toasts**: If an error occurs during the favouriting process, an error toast message will be displayed to the user, providing clear feedback on what went wrong.
+- **Frontend Error Handling**: The frontend has been updated to handle potential errors gracefully, ensuring that the application remains stable and functional even in the event of unexpected issues.
+
+--- 

@@ -5,16 +5,17 @@ import { formatDistanceToNow } from "date-fns";
 
 import { Overlay } from "./overlay";
 
-
-import { useAuth } from "@clerk/nextjs";
-
-
 import { Footer } from "./footer";
 import { Skeleton } from "@/components/ui/skeleton";
 
 
 import { Actions } from "@/components/actions";
 import { MoreHorizontal } from "lucide-react";
+
+import { useApiMutation } from "@/hooks/use-api-mutation";
+import { api } from "@/convex/_generated/api";
+import { useAuth } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 // Define the properties expected by the BoardCard component
 interface BoardCardProps {
@@ -28,7 +29,7 @@ interface BoardCardProps {
     isFavourite: boolean; // Flag indicating whether the board card is marked as favourite
 }
 
-// Define the BoardCard component
+
 export const BoardCard = ({ id, title, imageUrl, authorId, authorName, createdAt, orgId, isFavourite }: BoardCardProps) => {
     // Get the current user's ID from the authentication context
     const { userId } = useAuth();
@@ -38,7 +39,30 @@ export const BoardCard = ({ id, title, imageUrl, authorId, authorName, createdAt
     const createdAtLabel = formatDistanceToNow(createdAt, {
         addSuffix: true
     });
-    // Return the JSX for the board card
+
+    // Using the useApiMutation hook to get the mutation function and pending state for favouriting a board
+    const { mutate: onFavourite, pending: pendingFavourite, } = useApiMutation(api.board.favourite);
+    // Using the useApiMutation hook to get the mutation function and pending state for unfavouriting a board
+    const { mutate: onUnFavourite, pending: pendingUnFavourite } = useApiMutation(api.board.unFavourite);
+
+    // Function to toggle the favourite status of a board
+    const toggleFavourite = () => {
+        // If the board is currently marked as favourite, unfavourite it
+        if (isFavourite) {
+            // Call the onUnFavourite mutation with the board's ID
+            onUnFavourite({ id }).catch(() => {
+                // If the mutation fails, display an error toast message
+                toast.error("failed to UN favourite");
+            });
+        } else {
+            // If the board is not marked as favourite, favourite it
+            // Call the onFavourite mutation with the board's ID and the organization ID
+            onFavourite({ id, orgId }).catch(() => {
+                // If the mutation fails, display an error toast message
+                toast.error("failed to  favourite");
+            });
+        }
+    };
     return (
         <Link href={`/board/${id}`}>
             <div className="group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden">
@@ -56,8 +80,8 @@ export const BoardCard = ({ id, title, imageUrl, authorId, authorName, createdAt
                     title={title}
                     authorLabel={authorLabel}
                     createdAtLabel={createdAtLabel}
-                    onClick={() => { }}
-                    disabled={false}
+                    onClick={toggleFavourite}
+                    disabled={pendingFavourite || pendingUnFavourite}
                 />
             </div>
         </Link>

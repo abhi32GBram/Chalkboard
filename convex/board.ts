@@ -83,7 +83,7 @@ export const update = mutation({
         }
 
         // If the title is too long, throw an error
-        if (title.length >  60) {
+        if (title.length > 60) {
             throw new Error("Title cannot be Longer than  60 Characters");
         }
 
@@ -96,3 +96,90 @@ export const update = mutation({
         return board;
     },
 });
+
+
+// Mutation to mark a board as a favourite for a user
+export const favourite = mutation({
+    args: {
+        id: v.id("boards"), // The ID of the board to be marked as favourite
+        orgId: v.string() // The ID of the organization associated with the board
+    },
+    handler: async (ctx, args) => {
+        // Get the authenticated user's identity
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new Error("Unauthorized Access"); // Throw an error if the user is not authenticated
+        }
+
+        // Retrieve the board from the database using its ID
+        const board = await ctx.db.get(args.id)
+        if (!board) {
+            throw new Error("Board Not Found !") // Throw an error if the board is not found
+        }
+
+        // Get the user ID from the authenticated user's identity
+        const userId = identity.subject
+
+        // Check if the user has already marked the board as a favourite
+        const existingFavourite = await ctx.db.query("userFavourites").withIndex("by_user_board_org", (q) => q
+            .eq("userId", userId) // Match the user ID
+            .eq("boardId", board._id) // Match the board ID
+            .eq("orgId", args.orgId) // Match the organization ID
+        ).unique()
+
+        // If the user has already marked the board as a favourite, throw an error
+        if (existingFavourite) {
+            throw new Error("Board Already Favourited") // Throw an error if the board is already marked as a favourite
+        }
+
+        // Insert a new record into the userFavourites table to mark the board as a favourite
+        await ctx.db.insert("userFavourites", {
+            userId, boardId: board._id, orgId: args.orgId // Insert the user ID, board ID, and organization ID
+        })
+
+        // Return the board object
+        return board
+    }
+})
+
+// Mutation to remove a board from the user's favourites
+export const unFavourite = mutation({
+    args: {
+        id: v.id("boards"), // The ID of the board to be removed from favourites
+    },
+    handler: async (ctx, args) => {
+        // Get the authenticated user's identity
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new Error("Unauthorized Access"); // Throw an error if the user is not authenticated
+        }
+
+        // Retrieve the board from the database using its ID
+        const board = await ctx.db.get(args.id)
+        if (!board) {
+            throw new Error("Board Not Found !") // Throw an error if the board is not found
+        }
+
+        // Get the user ID from the authenticated user's identity
+        const userId = identity.subject
+
+        // Query the userFavourites table to find the record of the user's favourite board
+        const existingFavourite = await ctx.db
+            .query("userFavourites")
+            .withIndex("by_user_board", (q) => q
+                .eq("userId", userId) // Match the user ID
+                .eq("boardId", board._id) // Match the board ID
+            ).unique()
+
+        // If the user's favourite board record is not found, throw an error
+        if (!existingFavourite) {
+            throw new Error("Favourited Board Not Found !") // Throw an error if the favourite board record is not found
+        }
+
+        // Delete the record from the userFavourites table to remove the board from the user's favourites
+        await ctx.db.delete(existingFavourite._id)
+
+        // Return the board object
+        return board
+    }
+})

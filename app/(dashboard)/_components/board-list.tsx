@@ -78,7 +78,7 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
                         authorName={board.authorName}
                         createdAt={board._creationTime}
                         orgId={board.orgId}
-                        isFavourite={true}
+                        isFavourite={board.isFavourite} // Now the board can conditionally render the favourite state based on the DB state 
                     />
                 ))}
             </div>
