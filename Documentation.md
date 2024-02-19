@@ -236,3 +236,72 @@ To ensure the reliability and robustness of the new favouriting feature, we have
 - **Frontend Error Handling**: The frontend has been updated to handle potential errors gracefully, ensuring that the application remains stable and functional even in the event of unexpected issues.
 
 --- 
+
+> # Search Query Implemented 
+
+# Convex Search Query for Boards
+
+
+### Cascading Deletion of Favourited Board Relations
+
+* We have addressed and improved the cascading deletion functionality for board relations that are marked as favourites. 
+* When a board is deleted, the corresponding relation record in the favourites table is also removed to maintain consistency and prevent orphaned records.
+
+- **Cascading Deletion**: When a favourited board is deleted, the system will automatically remove the associated relation record from the favourites table.
+- **Reflecting Changes**: The deletion process ensures that the favourites table accurately reflects the current state of the user's favourites, with no stale or outdated entries.
+
+### Search Query Implementation for Boards
+
+* To enhance the search experience, we have implemented a search query feature for both the frontend and backend.
+*  This allows users to filter the list of boards based on the text entered in the search box.
+
+- **Frontend Search**: The search box on the frontend now supports live filtering of boards as the user types their query.
+- **Backend Search**: The backend has been updated to handle search queries, processing the text input and returning a list of matching boards.
+
+### Improved Search Experience for Favourites and Organization Boards
+
+* We have expanded the search functionality to include both the favourites and organization boards, providing users with a more refined search experience.
+
+- **Favourites Search**: Users can now search within their favourited boards, quickly finding the boards they have marked as important.
+- **Organization Boards Search**: In addition to favourites, users can also search within the boards associated with their organization, making it easier to locate specific boards across different contexts.
+
+
+* The `boards.ts` file in the Chalkboard project uses Convex to perform search queries on the `boards` collection.
+*  The search functionality is implemented within the `handler` function of the `get` query, which allows users to search for boards by title within a specific organization.
+
+## Search Query with Title
+
+* If a search term is provided by the user, the code constructs a search query against the `boards` collection using the `withSearchIndex` method. This method specifies the search index to be used for the search operation.
+
+```typescript
+if (title) {
+    boards = await ctx.db.query("boards").withSearchIndex("search_title", (q) => q
+        .search("title", title)
+        .eq("orgId", args.orgId)
+    ).collect()
+}
+```
+
+- `withSearchIndex("search_title", ...)`: Specifies the `search_title` index for the search.
+- `.search("title", title)`: Performs the search on the `title` field of the documents in the `boards` collection, looking for matches with the provided `title`.
+- `.eq("orgId", args.orgId)`: Filters the search results to only include boards that belong to the specified organization ID.
+- `.collect()`: Collects the results of the query into an array.
+
+## Search Query Without Title
+
+If no search term is provided, the code queries the `boards` collection for all boards associated with the given organization ID. It uses the `withIndex` method to filter the results by the organization ID and orders them in descending order.
+
+```typescript
+else {
+    boards = await ctx.db
+        .query("boards")
+        .withIndex("by_org", (q) => q.eq("orgId", args.orgId))
+        .order("desc")
+        .collect()
+}
+```
+
+- `withIndex("by_org", ...)`: Specifies the `by_org` index for filtering the results by the organization ID.
+- `.order("desc")`: Orders the results in descending order.
+- `.collect()`: Collects the results of the query into an array.
+---

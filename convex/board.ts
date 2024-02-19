@@ -39,22 +39,39 @@ export const create = mutation({
 });
 
 
+// Define a mutation to remove a board by its ID
 export const remove = mutation({
-    args: { id: v.id("boards") },
+    // Define the arguments that the mutation expects
+    args: { id: v.id("boards") }, // The ID of the board to remove
     handler: async (ctx, args) => {
-        const identity = await ctx.auth.getUserIdentity()
+        // Get the identity of the user who is trying to remove the board
+        const identity = await ctx.auth.getUserIdentity();
 
+        // If the user is not authenticated, throw an error
         if (!identity) {
-            throw new Error("Unauthorized Access !!")
+            throw new Error("Unauthorized Access !!");
         }
 
-        // ADD THE ABILITY TO CASCADELY DELETE THE FAVOURITED RELAITIONS ASWELL
+        // Get the user ID from the authenticated user's identity
+        const userId = identity.subject;
 
-        await ctx.db.delete(args.id)
+        // Query the userFavourites table to find if the board is marked as a favourite by the user
+        const existingFavourite = await ctx.db
+            .query("userFavourites")
+            .withIndex("by_user_board", (q) => q
+                .eq("userId", userId) // Match the user ID
+                .eq("boardId", args.id) // Match the board ID
+            ).unique();
+
+        // If the board is marked as a favourite, delete the record from the userFavourites table
+        if (existingFavourite) {
+            await ctx.db.delete(existingFavourite._id); // Delete the favourite record
+        }
+
+        // Delete the board record from the database
+        await ctx.db.delete(args.id); // Delete the board record
     }
-
-})
-
+});
 
 
 // The 'update' mutation is used to update the title of a board
@@ -121,10 +138,10 @@ export const favourite = mutation({
         const userId = identity.subject
 
         // Check if the user has already marked the board as a favourite
-        const existingFavourite = await ctx.db.query("userFavourites").withIndex("by_user_board_org", (q) => q
+        const existingFavourite = await ctx.db.query("userFavourites").withIndex("by_user_board", (q) => q
             .eq("userId", userId) // Match the user ID
             .eq("boardId", board._id) // Match the board ID
-            .eq("orgId", args.orgId) // Match the organization ID
+            
         ).unique()
 
         // If the user has already marked the board as a favourite, throw an error

@@ -1,13 +1,9 @@
 "use client"
-// Import necessary components
-
-
 import { useQuery } from "convex/react";
 import { EmptyBoard } from "./empty-board";
 import { EmptyFavourites } from "./empty-favourites";
 import { EmptySearch } from "./empty-search";
 import { api } from "@/convex/_generated/api";
-import { flightRouterStateSchema } from "next/dist/server/app-render/types";
 import { BoardCard } from "./board-card";
 import { NewBoardButton } from "./new-board-button";
 
@@ -23,7 +19,7 @@ interface BoardListProps {
 // Define the BoardList functional component
 export const BoardList = ({ orgId, query }: BoardListProps) => {
 
-    const data = useQuery(api.boards.get, { orgId })
+    const data = useQuery(api.boards.get, { orgId, ...query })
     //
     if (data === undefined) {
         return (
