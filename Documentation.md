@@ -305,3 +305,63 @@ else {
 - `.order("desc")`: Orders the results in descending order.
 - `.collect()`: Collects the results of the query into an array.
 ---
+
+> # Chalkboard Layout & Liveblocks Integration
+
+## Live Blocks: Use Cases in App Development
+
+* Live Blocks is a real-time collaboration infrastructure designed for building performant collaborative experiences. 
+* It provides a fully integrated solution around core products like Presence, Broadcast, Document, and Comments, enabling developers to create a wide range of collaborative applications. 
+
+- **Multiplayer Forms**: Enable users to fill out forms collaboratively, with changes synchronized in real-time across all participants.
+- **Multiplayer Text Editor**: Create text editors where multiple users can edit the same document simultaneously, with automatic conflict resolution.
+- **Multiplayer Creative Tools**: Develop applications for creative projects, such as design tools, where team members can work together on the same project in real-time.
+- **Multiplayer Whiteboard**: Implement whiteboards for brainstorming sessions or educational purposes, where all participants can draw and write on the same board simultaneously.
+- **Comments and Sharing**: Facilitate real-time comments and sharing of documents, allowing for immediate feedback and collaboration on various content types.
+- **Document Browsing and Permissions**: Manage access to documents and content, ensuring that only authorized users can view or edit specific documents.
+
+## Installation 
+
+1. **Install Live Blocks Package**: Install the Live Blocks client library by running the following command in your project directory:
+   ```
+   npm install @liveblocks/client
+   ```
+   This package provides the necessary functions to interact with Live Blocks servers.
+
+2. **Set Up the Live Blocks Client**: After installing the package, you need to set up the Live Blocks client in your application. Here's a basic example of how to create a client:
+   ```javascript
+   import { createClient } from "@liveblocks/client";
+
+   const client = createClient({
+     publicApiKey: "your_public_api_key_here",
+   });
+   ```
+   Replace `"your_public_api_key_here"` with your actual Live Blocks public API key.
+
+## Live Blocks: Wireframe Implementation and Setup
+
+### Completed Setup of the Wireframe Implementation of the Board
+
+* After being redirected from the main boards list page, the wireframe implementation of the board was completed.
+ * This setup included placeholders for the canvas, tools, members, and board information.
+ *  These placeholders serve as a visual guide for the layout and functionality of the board, ensuring that all necessary components are accounted for in the initial design phase.
+
+### Completed Initialisation and Setup of Live Blocks
+
+* The initialisation and setup of Live Blocks were completed to enable real-time collaboration features within the board.
+*  This involved configuring the Live Blocks client with the necessary API keys and setting up the necessary data structures to manage the state of the board in real-time. 
+* The setup ensures that all collaborative features, such as multiplayer editing, real-time updates, and presence tracking, are integrated seamlessly into the board.
+
+### Added Skeleton Loaders for the Various Components of the Wireframes
+
+* To enhance the user experience during the loading of the actual board content, skeleton loaders were added for the various components of the wireframes.
+*  These loaders provide a visual indication that content is being loaded, improving the perceived performance of the application. 
+* The skeleton loaders are displayed until the actual content is fetched and ready to be displayed, ensuring that users are not left with a blank screen or incomplete information.
+
+### Created Functional Components for the Individual Dependencies
+
+* Functional components were created for the individual dependencies of the board, including participants, toolbar, and board information.
+*  These components are designed to be modular and reusable, allowing for easy integration and management of the board's features. 
+* The participants component manages user presence and interactions, the toolbar component provides the necessary tools for editing and interacting with the board, and the board information component displays relevant information about the board, such as its name, description, and current status.
+
+
