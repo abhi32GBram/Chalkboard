@@ -1,5 +1,5 @@
 import { v } from "convex/values"; // Importing validation utilities from Convex
-import { mutation } from "./_generated/server"; // Importing mutation function from the generated server code
+import { mutation, query } from "./_generated/server"; // Importing mutation function from the generated server code
 
 const images = [
     "/placeholders/1.svg",
@@ -141,7 +141,7 @@ export const favourite = mutation({
         const existingFavourite = await ctx.db.query("userFavourites").withIndex("by_user_board", (q) => q
             .eq("userId", userId) // Match the user ID
             .eq("boardId", board._id) // Match the board ID
-            
+
         ).unique()
 
         // If the user has already marked the board as a favourite, throw an error
@@ -197,6 +197,15 @@ export const unFavourite = mutation({
         await ctx.db.delete(existingFavourite._id)
 
         // Return the board object
+        return board
+    }
+})
+
+
+export const get = query({
+    args: { id: v.id("boards") },
+    handler: async (ctx, args) => {
+        const board = ctx.db.get(args.id)
         return board
     }
 })

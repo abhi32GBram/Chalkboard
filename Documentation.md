@@ -364,4 +364,31 @@ else {
 *  These components are designed to be modular and reusable, allowing for easy integration and management of the board's features. 
 * The participants component manages user presence and interactions, the toolbar component provides the necessary tools for editing and interacting with the board, and the board information component displays relevant information about the board, such as its name, description, and current status.
 
+---
+> # Board Authorization using Liveblocks 
+
+### Added Authorization Workflow in Boards with Live Blocks
+
+* To enhance the security and accessibility of the boards, an authorization workflow was implemented using Live Blocks.
+*  This workflow ensures that only authorized users can access the board content, with a focus on verifying the user's identity and their association with the organization that owns the board.
+
+#### User Verification Process
+
+The process begins with the user attempting to access a board. The system then conducts a series of checks to authenticate the user and verify their permissions:
+
+1. **User Authentication**: The user's credentials are verified to ensure they have a valid account.
+2. **Organization Verification**: The system checks if the user belongs to the organization that owns the board. This is done by comparing the `userId` and `orgId` associated with the user and the board.
+3. **Access Permissions**:
+    *  If the `userId` and `orgId` match, the user is granted access to the board content. 
+    * This ensures that only members of the same organization can view and interact with the board.
+
+### Added Check Gateways for Organization-Specific Access
+
+
+- **Same Organization Access**: Users are only allowed to access boards if their `orgId` matches the `orgId` associated with the board. This prevents unauthorized access to sensitive or confidential information.
+- **Foreign Account Access Prevention**: 
+    * If a user attempts to access a board by copying its URL and using a foreign account, the system will detect the mismatch in `orgId` and prevent access.
+    *  Instead, the user will encounter an infinite loader and authentication errors in the developer tools.
+    *  This mechanism serves as a deterrent against unauthorized access attempts and helps maintain the integrity and security of the board content.
+
 
