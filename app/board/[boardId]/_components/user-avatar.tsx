@@ -19,9 +19,9 @@ export const UserAvatar = ({ src, name, fallback, borderColor }: UserAvatarProps
                 className="h-8 w-8 border-2" // Styling for the avatar
                 style={{ borderColor }} // Dynamic border color
             >
-                // AvatarImage component displays the avatar image
+                {/* // AvatarImage component displays the avatar image */}
                 <AvatarImage src={src} />
-                // AvatarFallback component displays fallback text if the avatar image fails to load
+                {/* // AvatarFallback component displays fallback text if the avatar image fails to load */}
                 <AvatarFallback className="text-xs font-semibold">
                     {fallback}
                 </AvatarFallback>

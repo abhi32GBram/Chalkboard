@@ -392,3 +392,71 @@ The process begins with the user attempting to access a board. The system then c
     *  This mechanism serves as a deterrent against unauthorized access attempts and helps maintain the integrity and security of the board content.
 
 
+--- 
+
+> # User Room Authentication & Live User Avatars in Canvas 
+
+
+- **Feature Addition**: 
+    - We have enhanced the platform by introducing the capability for users to join the canvas of a common room.
+    -  This feature is exclusively accessible to members of the organization, ensuring a secure and collaborative environment for team members.
+
+#### Wireframe Enhancements for Organization Section and Live Room
+
+- **Chalkboard Logo and Banner**: 
+    - A chalkboard logo and banner have been integrated into the organization section and live room.
+    - Clicking on these elements will redirect the user back to the organization boards section, providing a seamless navigation experience.
+
+- **Board Title as a Button**: 
+    - The board title has been transformed into a button, allowing users to rename the board on-the-spot.
+     - This feature enhances the flexibility and customization options available to users, enabling them to easily adapt the board to their specific needs.
+
+- **Utility Menu as Hamburger Menu**:
+    -  A utility menu, represented as a hamburger menu, has been added.
+    -  Upon clicking, this menu provides a range of options including copying the board link, deleting the board, and renaming the board.
+    -  This addition streamlines the management of boards, offering users quick access to essential functionalities.
+
+- **In-Room Member Avatars**:
+    -  The top-right section of the canvas now displays the avatars of in-room members.
+    -  This feature not only visually indicates the presence of other users in the canvas room but also shows their names, fostering a sense of community and collaboration among team members.
+--- 
+
+> # Toolbar Functionality Setup 
+
+## Toolbar Section Enhancements
+
+The toolbar section has been significantly enhanced to include a variety of tools, making it partially functional. The tools now available include:
+
+- **Select**: Allows users to select objects on the canvas.
+- **Rectangle**: Enables users to draw rectangles on the canvas.
+- **Ellipse**: Allows users to draw ellipses on the canvas.
+- **Text**: Provides the functionality to add text to the canvas.
+- **Pencil**: Enables users to draw freehand on the canvas.
+- **Sticky Notes**: Allows users to add sticky notes to the canvas for annotations or reminders.
+
+## Undo and Redo Buttons
+
+Two new buttons, Undo and Redo, have been added to the toolbar. These buttons are crucial for managing changes made on the canvas:
+
+- **Canvas History Hooks**: These hooks are attached to the Undo and Redo buttons. They enable the functionality of undoing and redoing changes made on the canvas. This is achieved by maintaining a history of canvas states, allowing users to revert or reapply changes as needed.
+- **Functionality Source**: The functionality for these buttons comes from the `useHistory` hook provided by Liveblocks. This hook manages the history of canvas states, facilitating the undo and redo operations.
+
+## User Modes and Tool Selection
+
+* The application now supports different user modes, with the ability to select tools based on the current mode.
+*  The default tool selected in each mode is the **Select** tool. 
+* This feature enhances the user experience by allowing for more intuitive and context-aware tool selection:
+
+- **States and Selection**: The application maintains states that reflect the current user mode. Based on these states, the appropriate tool can be selected and made active on the canvas. This ensures that users can easily switch between tools and modes, enhancing the overall usability of the application.
+
+## Backend Event Triggers
+
+Several event triggers have been added to the backend to manage various user interactions with the canvas:
+
+- **Pressing**: Triggered when a user presses a key or a mouse button. This can be used to initiate actions or modify the behavior of the application based on user input.
+- **SelectionNet**: A specialized event that likely refers to a network of selection events. This could be used to manage complex selection scenarios, such as selecting multiple objects or handling selection in a networked environment.
+- **Translation**: Triggered when an object on the canvas is moved or translated. This event is crucial for tracking and managing the movement of objects within the application.
+- **Resizing**: Triggered when an object on the canvas is resized. This event allows the application to adjust the size of objects dynamically, enhancing the flexibility and precision of the canvas editing capabilities.
+- **Free Draw**: Triggered when a user draws freely on the canvas. This event is essential for capturing and managing freehand drawings, providing a more expressive and creative canvas editing experience.
+
+--- 
