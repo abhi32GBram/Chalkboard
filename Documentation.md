@@ -460,3 +460,40 @@ Several event triggers have been added to the backend to manage various user int
 - **Free Draw**: Triggered when a user draws freely on the canvas. This event is essential for capturing and managing freehand drawings, providing a more expressive and creative canvas editing experience.
 
 --- 
+
+ > #  Real-Time Cursors in the Workspace
+
+
+### Real-Time Cursor Display
+
+- **Real-Time Updates**:
+     -  The workspace now displays the cursors of all users who join the canvas in real time.
+     -  This feature ensures that everyone's actions are immediately visible to others, fostering a more interactive and collaborative environment.
+
+- **Unique Color Assignment**: 
+    - Each user is assigned a unique color for their cursor and label in the user list located in the top right section of the canvas. 
+    - This color-coding helps in quickly identifying different users and their actions within the workspace.
+
+- **Low Latency**: 
+    - The cursor position updates are powered by Convex DB, ensuring a fast response time of just 16ms. 
+    - This minimal latency ensures that the workspace remains responsive and synchronized across all users.
+
+#### Cursor Position Calculation
+
+- The appearance and position of each user's cursor are determined by a callback function associated with the `onPointerMove` event listeners. 
+ - This setup actively updates the coordinates of the pointer to the Convex server, which then reflects these updates to all users in the canvas session.
+ -  This mechanism ensures that the cursor movements are accurately represented in real time, with minimal delay.
+
+### Canvas Expansion and Zooming
+
+- **Infinite Working Space**:
+    - Users can now expand and zoom into the canvas using the mouse wheel. 
+    - This feature provides a virtually infinite working space, allowing for extensive collaboration and creative exploration without the constraints of physical space.
+
+### User Identification
+
+- **Named Labels**:
+    -  A named label is attached to each user's cursor, displaying their names. 
+    - This feature simplifies the identification of fellow users in the canvas, making it easier to collaborate and communicate effectively.
+
+--- 
