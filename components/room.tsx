@@ -2,10 +2,12 @@
 
 // Import necessary dependencies
 import { ClientSideSuspense } from "@liveblocks/react"
+import { Layer } from '@/types/canvas'
 import { ReactNode } from "react"
 
 // Import RoomProvider from the liveblocks configuration
 import { RoomProvider } from "@/liveblocks.config"
+import { LiveMap, LiveList, LiveObject } from "@liveblocks/client"
 
 // Define the RoomProps interface for type checking the props of the Room component
 interface RoomProps {
@@ -18,7 +20,11 @@ interface RoomProps {
 export const Room = ({ children, roomId, fallback }: RoomProps) => {
     return (
         // RoomProvider is used to provide room-specific context to its children
-        <RoomProvider id={roomId} initialPresence={{ cursor: null }}>
+        <RoomProvider
+            id={roomId}
+            initialPresence={{ cursor: null, selection: [] }}
+            initialStorage={{ layers: new LiveMap<string, LiveObject<Layer>>, layerIds: new LiveList() }}
+        >
             {/* // ClientSideSuspense is used to handle loading states while the room data is being fetched */}
             <ClientSideSuspense fallback={fallback}>
                 {() => children}

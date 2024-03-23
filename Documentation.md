@@ -497,3 +497,40 @@ Several event triggers have been added to the backend to manage various user int
     - This feature simplifies the identification of fellow users in the canvas, making it easier to collaborate and communicate effectively.
 
 --- 
+
+ > # Drawing on the Canvas
+
+*  This feature allows users to create rectangular shapes on the canvas, providing a basic drawing tool for users to start visualizing their ideas.
+* For now its a rectangle with default stroke
+
+### Working of Render on Chalkboard : 
+
+- **LayerPreview Component**: Renders individual layers, including rectangles, on the canvas.
+- **Utility Functions**:
+     - `pointerEventToCanvasPoint`: Converts pointer events to canvas coordinates.
+    - `insertLayer`: Inserts a new layer onto the canvas.
+- **User Interaction**:
+    - **Pointer Down**: Sets canvas mode to `CanvasMode.Inserting`.
+    - **Pointer Move**: Updates user's cursor position.
+    - **Pointer Up**: Inserts a new rectangle layer if in `CanvasMode.Inserting`.
+    - **Layer Rendering**: `LayerPreview` renders the rectangle layer.
+
+
+#### Using NanoID Package 
+
+* The `nanoid` npm package is a compact, secure, and URL-friendly unique string ID generator designed for JavaScript applications. 
+* It is particularly useful for generating IDs for various purposes such as database keys, session identifiers, and more.
+
+- **Small Size**: It is only 116 bytes in size when minified and brotlied, making it an efficient choice for projects where minimizing the bundle size is important. It has no dependencies, ensuring that it does not introduce additional overhead 
+
+- **Security**: `nanoid` uses a hardware random generator, making it safe for use in clusters and ensuring the uniqueness and security of the generated IDs 
+
+- **Short IDs**: It employs a larger alphabet than UUID (`A-Za-z0-9_-`), which allows for shorter IDs. The default ID length is 21 characters, significantly reducing the size from 36 to 21 symbols, making it more compact than UUIDs 
+
+- **Customization**: `nanoid` offers flexibility in generating IDs. You can generate IDs with custom lengths, use a non-secure ID with a custom alphabet and length, or even specify a custom alphabet for generating IDs. This customization is useful for scenarios where specific requirements for ID uniqueness, length, or character set are needed
+
+- **Portability**: The package has been ported to over 20 programming languages, making it a versatile choice for projects that require cross-language compatibility 
+
+- **Popularity and Maintenance**: `nanoid` is popular, with a significant number of weekly downloads, indicating its widespread use in the developer community. It has a healthy version release cadence and is actively maintained, with the latest version being published recently
+
+- **Installation**: It can be easily installed via npm using the command `npm install nanoid`. For projects that require CommonJS modules, version 3.x of `nanoid` is still supported and can be installed using `npm install nanoid@3` 

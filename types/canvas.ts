@@ -139,3 +139,9 @@ export enum CanvasMode {
     Resizing,    // The canvas is in resizing mode, allowing users to resize layers.
     Pencil,     // The canvas is in pencil mode, allowing users to draw freehand.
 };
+
+// Define a type for a layer, which can be one of several specific types of layers
+// that can be drawn on the canvas. This union type includes RectangleLayer,
+// EllipseLayer, PathLayer, TextLayer, and NoteLayer, allowing for a variety
+// of shapes and annotations to be added to the canvas.
+export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer
