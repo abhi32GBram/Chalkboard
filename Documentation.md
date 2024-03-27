@@ -534,3 +534,43 @@ Several event triggers have been added to the backend to manage various user int
 - **Popularity and Maintenance**: `nanoid` is popular, with a significant number of weekly downloads, indicating its widespread use in the developer community. It has a healthy version release cadence and is actively maintained, with the latest version being published recently
 
 - **Installation**: It can be easily installed via npm using the command `npm install nanoid`. For projects that require CommonJS modules, version 3.x of `nanoid` is still supported and can be installed using `npm install nanoid@3` 
+
+--- 
+> #  Canvas Layer Objects and Selection Features
+
+
+### Selecting Layer Objects/Shapes
+
+- **Feature Overview**:
+    -  Users now have the ability to select individual layer objects or shapes directly on the canvas.
+    -  This feature allows for more precise manipulation of objects within the canvas environment.
+
+- **Implementation Details**: 
+    - The selection functionality has been integrated into the canvas interface, enabling users to click on objects to select them.
+     -  Once selected, users can perform various actions on the selected object, such as moving, resizing, or deleting it.
+
+### Real-Time Layer Selection View
+
+- **Feature Overview**:
+    -  The application now supports real-time viewing of layer selections made by other users. When a user selects a shape on the canvas, the selection is visible to all other users in the same session. 
+    - The color of the selected shape matches the user's ID or cursor color, providing a clear visual indication of who is currently selecting which object.
+
+- **Implementation Details**: 
+    - This feature leverages WebSocket technology to broadcast selection events to all connected clients. 
+    - Upon receiving a selection event, the application updates the canvas to highlight the selected object with the corresponding user's color.
+    -  This ensures that all users have a consistent view of the canvas and the current selections.
+
+### Selection Net with Resize and Reposition Handlers
+
+- **Feature Overview**:
+    -  To further enhance the manipulation of objects on the canvas, we have introduced a selection net feature. 
+    - This feature allows users to select an object and then use handlers to resize and/or reposition it around the canvas.
+    -  The selection net ensures that users can easily adjust the size and position of objects without losing precision.
+
+- **Implementation Details**: 
+    - The selection net is implemented as an overlay on the selected object. 
+    - It includes handles for resizing and moving the object. 
+    - The application checks for the presence of a selection net and activates the appropriate handlers based on user interactions. 
+    - This ensures that users can easily manipulate objects while maintaining the integrity of the canvas layout.
+
+---

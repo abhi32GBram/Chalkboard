@@ -1,4 +1,5 @@
 // Importing the RectangleLayer type from the canvas types
+import { colorToCSS } from "@/lib/utils";
 import { RectangleLayer } from "@/types/canvas";
 
 // Defining the props for the Rectangle component
@@ -27,8 +28,8 @@ export const Rectangle = ({ id, layer, onPointerDown, selectionColor }: Rectangl
             height={height} // Height of the rectangle
 
             strokeWidth={1} // Width of the stroke (outline)
-            fill="#000" // Fill color of the rectangle
-            stroke="transparent" // Stroke color, set to transparent to hide the outline
+            fill={fill ? colorToCSS(fill) : "#a5b1c4"} // Sets the fill color of the rectangle to the specified color if available, otherwise defaults to a light gray color.
+            stroke={selectionColor || "transparent"} // Sets the stroke color to the selection color if provided, otherwise defaults to transparent to hide the outline when not selected
         />
     );
 };

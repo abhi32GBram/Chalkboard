@@ -1,17 +1,18 @@
 "use client"
 
 // Import necessary components, hooks, and utility functions
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Info } from './info'
 import { Participants } from './participants'
 import { Toolbar } from './toolbar'
 import { Camera, CanvasMode, CanvasState, Color, LayerType, Point } from '@/types/canvas'
-import { useHistory, useCanRedo, useCanUndo, useMutation, useStorage } from '@/liveblocks.config'
+import { useHistory, useCanRedo, useCanUndo, useMutation, useStorage, useOthersMapped } from '@/liveblocks.config'
 import { CursorsPresence } from './cursor-presence'
-import { pointerEventToCanvasPoint } from '@/lib/utils'
+import { connectionIdToColor, pointerEventToCanvasPoint } from '@/lib/utils'
 import { nanoid } from "nanoid"
 import { LiveObject } from '@liveblocks/client'
 import { LayerPreview } from './layer-preview'
+import { SelectionBox } from './selection-box'
 
 const MAX_LAYERS = 100
 
@@ -107,6 +108,54 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
     }, [camera, canvasState, history, insertLayer])
 
+    // Retrieve selections from other users' presences
+    const selections = useOthersMapped((other) => other.presence.selection)
+
+    // Handler for when a layer is clicked with the pointer
+    const onLayerPointerDown = useMutation((
+        { self, setMyPresence },
+        e: React.PointerEvent,
+        layerId: string
+    ) => {
+        // If the current mode is Pencil or Inserting, do nothing
+        if (canvasState.mode === CanvasMode.Pencil || canvasState.mode === CanvasMode.Inserting) {
+            return
+        }
+
+        // Pause the history to prevent undo/redo actions during this operation
+        history.pause()
+        // Stop the event from propagating further
+        e.stopPropagation()
+
+        // Convert the pointer event to a canvas point, taking into account the camera's position
+        const point = pointerEventToCanvasPoint(e, camera)
+
+        // If the current user's selection does not include the clicked layer, update the selection
+        if (!self.presence.selection.includes(layerId)) {
+            setMyPresence({ selection: [layerId] }, { addToHistory: true })
+        }
+
+        // Update the canvas state to indicate that the user is translating a layer
+        setCanvasState({ mode: CanvasMode.Translating, current: point })
+
+    }, [setCanvasState, camera, history, canvasState.mode])
+
+    // Create a mapping of layer IDs to their corresponding selection colors
+    const layerIdToColorSelection = useMemo(() => {
+        const layerIdToColorSelection: Record<string, string> = {}
+
+        // Iterate over each user's selections
+        for (const user of selections) {
+            const [connectionId, selection] = user
+
+            // For each layer ID in the user's selection, map it to the user's color
+            for (const layerId of selection) {
+                layerIdToColorSelection[layerId] = connectionIdToColor(connectionId)
+            }
+        }
+        return layerIdToColorSelection
+    }, [selections])
+
     // Main container for the board, including components for info, participants, and toolbar
     return (
         <main className="h-full w-full relative bg-neutral-100 touch-none">
@@ -134,10 +183,12 @@ export const Canvas = ({ boardId }: CanvasProps) => {
                         <LayerPreview
                             key={layerId}
                             id={layerId}
-                            onLayerPointerDown={() => { }}
-                            selectionColor="#000"
+                            onLayerPointerDown={onLayerPointerDown}
+                            selectionColor={layerIdToColorSelection[layerId]}
                         />
                     ))}
+
+                    <SelectionBox onResizeHandlePointerDown={() => { }} />
                     <CursorsPresence />
                 </g>
             </svg>

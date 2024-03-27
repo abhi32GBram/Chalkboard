@@ -1,5 +1,5 @@
 // Importing necessary types and utilities
-import { Camera } from "@/types/canvas"
+import { Camera, Color } from "@/types/canvas"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -33,4 +33,15 @@ export function pointerEventToCanvasPoint(
     x: Math.round(e.clientX) - camera.x,
     y: Math.round(e.clientY) - camera.y
   }
+}
+
+// This function converts a Color object into a CSS-compatible color string.
+// It takes a Color object as input, which contains red, green, and blue color values.
+// Each color value is converted to a hexadecimal string and concatenated to form a CSS color string.
+export function colorToCSS(color: Color) {
+  // Convert the red, green, and blue values to hexadecimal strings.
+  // The toString(16) method converts the number to a hexadecimal string.
+  // The padStart(2, "0") method ensures that each hexadecimal string is at least 2 characters long,
+  // padding with zeros if necessary.
+  return `#${color.r.toString(16).padStart(2, "0")}${color.g.toString(16).padStart(2, "0")}${color.b.toString(16).padStart(2, "0")}`
 }
