@@ -574,3 +574,56 @@ Several event triggers have been added to the backend to manage various user int
     - This ensures that users can easily manipulate objects while maintaining the integrity of the canvas layout.
 
 ---
+
+# Resizing Layer Functionality 
+
+
+
+* The Chalkboard application now includes the ability to resize layers on the canvas.
+ * This functionality is facilitated by the `resizeSelectedLayer` and `onPointerMove` functions, which work together to enable the resizing of a layer.
+
+#### Initialization of Resizing Mode
+
+- When a user initiates a resize action (e.g., by clicking and dragging a resize handle), the `onResizeHandlePointerDown` callback is triggered. 
+- This callback updates the `canvasState` to indicate that the user is in the `CanvasMode.Resizing` mode.
+-  It also stores the initial bounds of the layer being resized and the corner of the layer that is being dragged.
+
+#### Tracking Pointer Movement
+
+- The `onPointerMove` function is responsible for handling pointer (mouse or touch) movements on the canvas. 
+- It is called whenever the pointer moves while it is over the canvas.
+-  This function is crucial for the resizing functionality because it updates the user's cursor position on the canvas and checks if the current mode is `CanvasMode.Resizing`.
+
+#### Updating Layer Bounds
+
+- If the `canvasState` indicates that the user is in the `CanvasMode.Resizing` mode, the `onPointerMove` function calls the `resizeSelectedLayer` mutation. 
+- This mutation is responsible for updating the bounds of the selected layer based on the new pointer position.
+
+#### Calculating New Bounds
+
+- Inside the `resizeSelectedLayer` mutation, the new bounds for the layer are calculated using the `resizeBounds` utility function.
+-  This function takes the initial bounds of the layer, the corner being dragged, and the new pointer position as arguments.
+-  It calculates the new width and height for the layer based on these inputs.
+
+#### Updating the Layer
+
+- Once the new bounds are calculated, the `resizeSelectedLayer` mutation retrieves the selected layer from the `storage` and updates its bounds with the new values.
+- This effectively resizes the layer on the canvas.
+
+#### Continuous Resizing
+
+- The `onPointerMove` function continues to call the `resizeSelectedLayer` mutation as long as the pointer is moving and the user is in the `CanvasMode.Resizing` mode. 
+- This allows for continuous resizing of the layer as the user drags the resize handle.
+
+#### Completion of Resizing
+
+- When the user releases the pointer (e.g., by releasing the mouse button or lifting their finger), the `onPointerUp` function is triggered. 
+- This function checks if the user was in the `CanvasMode.Resizing` mode and, if so, updates the `canvasState` to exit the resizing mode.
+-  This effectively completes the resizing process.
+
+ ### Using Layer/Object Handlers
+
+- With the introduction of layer/object handlers, users can now select and drag the layer to change its size from the 8 point handlers on the layer in any direction. 
+- This provides a more intuitive and flexible way to resize layers on the canvas.
+
+---

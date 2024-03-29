@@ -5,10 +5,10 @@ import { useCallback, useMemo, useState } from 'react'
 import { Info } from './info'
 import { Participants } from './participants'
 import { Toolbar } from './toolbar'
-import { Camera, CanvasMode, CanvasState, Color, LayerType, Point } from '@/types/canvas'
+import { Camera, CanvasMode, CanvasState, Color, LayerType, Point, Side, XYWH } from '@/types/canvas'
 import { useHistory, useCanRedo, useCanUndo, useMutation, useStorage, useOthersMapped } from '@/liveblocks.config'
 import { CursorsPresence } from './cursor-presence'
-import { connectionIdToColor, pointerEventToCanvasPoint } from '@/lib/utils'
+import { connectionIdToColor, pointerEventToCanvasPoint, resizeBounds } from '@/lib/utils'
 import { nanoid } from "nanoid"
 import { LiveObject } from '@liveblocks/client'
 import { LayerPreview } from './layer-preview'
@@ -33,6 +33,11 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         r: 0,
         g: 0,
         b: 0
+    })
+
+    // State for managing the current mode of the canvas (e.g., drawing, selecting)
+    const [canvasState, setCanvasState] = useState<CanvasState>({
+        mode: CanvasMode.None
     })
 
     // Hooks for managing undo/redo history and canvas state
@@ -69,6 +74,44 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         setCanvasState({ mode: CanvasMode.None });
     }, [lastUsedColor]);
 
+    // Define a mutation for resizing the selected layer on the canvas
+    const resizeSelectedLayer = useMutation((
+        { storage, self }, // Destructure the storage and self objects from the context
+        point: Point // The new point to resize the layer to
+    ) => {
+        // Check if the current mode is not resizing, if so, exit the function
+        if (canvasState.mode !== CanvasMode.Resizing) {
+            return;
+        }
+
+        // Calculate the new bounds for the layer based on the initial bounds, corner, and new point
+        const bounds = resizeBounds(canvasState.initialBounds, canvasState.corner, point)
+        // Retrieve the live layers from the storage
+        const liveLayers = storage.get("layers")
+        // Get the selected layer from the live layers using the first element of the user's selection
+        const layer = liveLayers.get(self.presence.selection[0])
+
+        // If the layer exists, update its bounds
+        if (layer) {
+            layer.update(bounds)
+        }
+
+    }, [canvasState]) // Depend on the canvasState to re-run the mutation if it changes
+
+    // Define a callback for handling pointer down events on the resize handle
+    const onResizeHandlePointerDown = useCallback((corner: Side, initialBounds: XYWH) => {
+        // Log the corner and initial bounds for debugging purposes
+
+        // Pause the history to prevent undo/redo actions during the resize operation
+        history.pause()
+        // Update the canvas state to indicate that the user is resizing a layer
+        setCanvasState({
+            mode: CanvasMode.Resizing,
+            initialBounds,
+            corner
+        })
+    }, [history]) // Depend on the history object to re-create the callback if it changes
+
     // Callback for handling mouse wheel events to zoom in/out
     const onWheel = useCallback((e: React.WheelEvent) => {
         setCamera((camera) => ({
@@ -77,22 +120,24 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         }))
     }, [])
 
+
+
     // Mutation for updating the user's cursor position on the canvas
     const onPointerMove = useMutation(({ setMyPresence }, e: React.PointerEvent) => {
         e.preventDefault()
         const current = pointerEventToCanvasPoint(e, camera)
+
+        if (canvasState.mode === CanvasMode.Resizing) {
+            resizeSelectedLayer(current)
+        }
         setMyPresence({ cursor: current })
-    }, [])
+    }, [canvasState, resizeSelectedLayer, camera])
 
     // Mutation for handling when the pointer leaves the canvas
     const onPointerLeave = useMutation(({ setMyPresence }) => {
         setMyPresence({ cursor: null })
     }, [])
 
-    // State for managing the current mode of the canvas (e.g., drawing, selecting)
-    const [canvasState, setCanvasState] = useState<CanvasState>({
-        mode: CanvasMode.None
-    })
 
     const onPointerUp = useMutation(({ }, e) => {
         const pointer = pointerEventToCanvasPoint(e, camera)
@@ -188,7 +233,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
                         />
                     ))}
 
-                    <SelectionBox onResizeHandlePointerDown={() => { }} />
+                    <SelectionBox onResizeHandlePointerDown={onResizeHandlePointerDown} />
                     <CursorsPresence />
                 </g>
             </svg>

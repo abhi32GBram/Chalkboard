@@ -1,5 +1,5 @@
 // Importing necessary types and utilities
-import { Camera, Color } from "@/types/canvas"
+import { Camera, Color, Point, Side, XYWH } from "@/types/canvas"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -45,3 +45,45 @@ export function colorToCSS(color: Color) {
   // padding with zeros if necessary.
   return `#${color.r.toString(16).padStart(2, "0")}${color.g.toString(16).padStart(2, "0")}${color.b.toString(16).padStart(2, "0")}`
 }
+
+// Function to resize the bounds of an object based on the corner being dragged and the new point.
+export function resizeBounds(
+  bounds: XYWH, // The initial bounds of the object.
+  corner: Side, // The corner being dragged for resizing.
+  point: Point // The new point to resize the object to.
+): XYWH {
+  // Initialize a result object with the initial bounds.
+  const result = {
+    x: bounds.x,
+    y: bounds.y,
+    width: bounds.width,
+    height: bounds.height,
+  };
+
+  // If the left corner is being dragged, adjust the x position and width accordingly.
+  if ((corner & Side.Left) === Side.Left) {
+    result.x = Math.min(point.x, bounds.x + bounds.width);
+    result.width = Math.abs(bounds.x + bounds.width - point.x);
+  }
+
+  // If the right corner is being dragged, adjust the x position and width accordingly.
+  if ((corner & Side.Right) === Side.Right) {
+    result.x = Math.min(point.x, bounds.x);
+    result.width = Math.abs(point.x - bounds.x);
+  }
+
+  // If the top corner is being dragged, adjust the y position and height accordingly.
+  if ((corner & Side.Top) === Side.Top) {
+    result.y = Math.min(point.y, bounds.y + bounds.height);
+    result.height = Math.abs(bounds.y + bounds.height - point.y);
+  }
+
+  // If the bottom corner is being dragged, adjust the y position and height accordingly.
+  if ((corner & Side.Bottom) === Side.Bottom) {
+    result.y = Math.min(point.y, bounds.y);
+    result.height = Math.abs(point.y - bounds.y);
+  }
+
+  // Return the updated bounds.
+  return result;
+};

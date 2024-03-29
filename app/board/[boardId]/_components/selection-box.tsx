@@ -39,6 +39,7 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                 style={{
                     transform: `translate(${bounds.x}px, ${bounds.y}px)`,
                 }}
+
                 x={0}
                 y={0}
                 width={bounds.width}
@@ -60,6 +61,10 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                                 ${bounds.x - HANDLE_WIDTH / 2}px,
                                 ${bounds.y - HANDLE_WIDTH / 2}px )`
                         }}
+                        onPointerDown={(e) => {
+                            e.stopPropagation();
+                            onResizeHandlePointerDown(Side.Top + Side.Left, bounds);
+                        }}
                     />
                     {/* Top handle */}
                     <rect
@@ -74,6 +79,10 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                                 translate(
                                         ${bounds.x + bounds.width / 2 - HANDLE_WIDTH / 2}px, 
                                         ${bounds.y - HANDLE_WIDTH / 2}px)`
+                        }}
+                        onPointerDown={(e) => {
+                            e.stopPropagation();
+                            onResizeHandlePointerDown(Side.Top, bounds);
                         }}
                     />
                     {/* Top-right handle */}
@@ -90,6 +99,10 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                                             ${bounds.x - HANDLE_WIDTH / 2 + bounds.width}px,
                                             ${bounds.y - HANDLE_WIDTH / 2}px)`
                         }}
+                        onPointerDown={(e) => {
+                            e.stopPropagation();
+                            onResizeHandlePointerDown(Side.Top + Side.Right, bounds);
+                        }}
                     />
                     {/* Right handle */}
                     <rect
@@ -104,6 +117,10 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                                     translate(
                                             ${bounds.x - HANDLE_WIDTH / 2 + bounds.width}px, 
                                             ${bounds.y + bounds.height / 2 - HANDLE_WIDTH / 2}px)`
+                        }}
+                        onPointerDown={(e) => {
+                            e.stopPropagation();
+                            onResizeHandlePointerDown(Side.Right, bounds);
                         }}
                     />
                     {/* Bottom-right handle */}
@@ -120,6 +137,10 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                                             ${bounds.x - HANDLE_WIDTH / 2 + bounds.width}px, 
                                             ${bounds.y - HANDLE_WIDTH / 2 + bounds.height}px)`
                         }}
+                        onPointerDown={(e) => {
+                            e.stopPropagation();
+                            onResizeHandlePointerDown(Side.Bottom + Side.Right, bounds);
+                        }}
                     />
                     {/* Bottom handle */}
                     <rect
@@ -134,6 +155,10 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                                     translate(
                                             ${bounds.x + bounds.width / 2 - HANDLE_WIDTH / 2}px,
                                             ${bounds.y - HANDLE_WIDTH / 2 + bounds.height}px)`
+                        }}
+                        onPointerDown={(e) => {
+                            e.stopPropagation();
+                            onResizeHandlePointerDown(Side.Bottom, bounds);
                         }}
                     />
                     {/* Bottom-left handle */}
@@ -150,6 +175,10 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                                             ${bounds.x - HANDLE_WIDTH / 2}px,
                                             ${bounds.y - HANDLE_WIDTH / 2 + bounds.height}px)`
                         }}
+                        onPointerDown={(e) => {
+                            e.stopPropagation();
+                            onResizeHandlePointerDown(Side.Bottom + Side.Left, bounds);
+                        }}
                     />
                     {/* Left handle */}
                     <rect
@@ -164,6 +193,10 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
                                     translate(
                                             ${bounds.x - HANDLE_WIDTH / 2}px,
                                             ${bounds.y - HANDLE_WIDTH / 2 + bounds.height / 2}px)`
+                        }}
+                        onPointerDown={(e) => {
+                            e.stopPropagation();
+                            onResizeHandlePointerDown(Side.Left, bounds);
                         }}
                     />
                 </>
