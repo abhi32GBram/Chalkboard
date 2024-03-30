@@ -627,3 +627,87 @@ Several event triggers have been added to the backend to manage various user int
 - This provides a more intuitive and flexible way to resize layers on the canvas.
 
 ---
+
+> # Enhanced Canvas Interaction - Translation & Deselection 
+
+### Translating Objects/Layers on the Canvas
+
+We have introduced a new feature that allows users to translate (move) objects or layers on the canvas. This functionality is designed to provide a more intuitive and user-friendly way to manipulate elements within the canvas.
+
+#### How to Use
+
+1. **Select the Object/Layer**: First, you need to select the object or layer you wish to move. This can be done by clicking on the object or layer.
+
+2. **Click and Drag**: Once the object or layer is selected, you can move it by clicking and dragging it to the desired location on the canvas. The object or layer will follow the cursor as you drag it, allowing for precise placement.
+
+3. **Release to Place**: After dragging the object or layer to the desired location, release the mouse button to place it. The object or layer will now be located at the new position on the canvas.
+
+### Working : 
+
+### 1.  `onPointerDown`
+
+- The `onPointerDown` function is defined using the `useCallback` hook. 
+- This function is triggered when the user presses down on the canvas. 
+- It converts the pointer event to a canvas point, taking into account the camera's position.
+-  If the current mode is not `Inserting`, it sets the canvas state to `Pressing` mode and stores the origin point for drawing or translating.
+
+
+
+### 2.  `translateSelectedLayer`
+
+- The `translateSelectedLayer` function is defined using the `useMutation` hook.
+-  This function is responsible for translating the selected layer on the canvas. 
+- It calculates the offset based on the difference between the new point and the current point, retrieves the live layers from the storage, and updates the position of each selected layer based on the calculated offset.
+
+
+### 3.  `onPointerMove`
+
+- The `onPointerMove` function is also defined using the `useMutation` hook.
+-  This function handles pointer move events on the canvas. 
+- It prevents the default action of the event, converts the pointer event to a canvas point, and checks if the current mode is `Translating`. 
+- If so, it calls the `translateSelectedLayer` function to translate the selected layer.
+
+
+
+### 4.  `onPointerUp`
+
+- The `onPointerUp` function is defined using the `useMutation` hook. 
+- This function handles pointer up events on the canvas. 
+- It converts the pointer event to a canvas point, checks the current mode, and updates the canvas state accordingly.
+-  If the mode is `None` or `Pressing`, it unselects the layer and sets the mode to `None`.
+- If the mode is `Inserting`, it inserts a new layer at the pointer's position.
+
+
+### Deselecting Objects/Layers by Clicking Outside the Canvas
+
+#### How to Use
+
+-  **Click Outside the Canvas**: To deselect the currently selected object or layer, simply click anywhere outside the canvas area. This action will clear the current selection, allowing you to interact with other elements on the canvas or perform other actions without the previous selection interfering.
+
+### Working :
+
+### 1.  `unselectLayer`
+
+- The `unselectLayer` function is defined using the `useMutation` hook.
+-  This function is responsible for unselecting the currently selected layer. 
+- It checks if there are any layers selected by the user. 
+- If there are, it updates the user's presence to clear the selection. This effectively unselects the layer or object on the canvas.
+
+
+### 2. `onLayerPointerDown`
+
+- The `onLayerPointerDown` function is also defined using the `useMutation` hook.
+-  This function handles pointer down events on a layer. 
+- It checks if the current mode is `Pencil` or `Inserting`. 
+- If not, it pauses the history to prevent undo/redo actions during this operation, stops the event from propagating further, and updates the canvas state to indicate that the user is translating a layer.
+-  This function is crucial for managing the selection state of layers.
+
+
+### 3.  `onPointerUp`
+
+- The `onPointerUp` function, defined using the `useMutation` hook, handles pointer up events on the canvas.
+ -  It checks the current mode and updates the canvas state accordingly. 
+ - If the mode is `None` or `Pressing`, it calls the `unselectLayer` function to unselect the layer and sets the mode to `None`. 
+ - This ensures that when the user releases the pointer after selecting a layer, the layer is unselected.
+
+---
