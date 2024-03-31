@@ -711,3 +711,35 @@ We have introduced a new feature that allows users to translate (move) objects o
  - This ensures that when the user releases the pointer after selecting a layer, the layer is unselected.
 
 ---
+
+> ## Enhanced Features for Object/Layer Manipulation
+
+
+#### Layer Aware Tool Box
+
+- The color customization feature is integrated into a layer-aware tool box. 
+- This tool box is specifically designed to interact with the selected layer, ensuring that any color changes are applied directly to the active layer. 
+- This ensures that users can easily manage and customize the appearance of their layers without affecting other elements within the application.
+
+#### Color Palette
+
+- The tool box includes a color palette with 10 popular and vibrant colors. 
+- These colors have been carefully selected to provide a wide spectrum of options, catering to a variety of user preferences and design needs.
+-  Users can easily select their desired color from this palette and apply it to the selected layer with just a few clicks.
+
+### Layer Deletion
+
+- In addition to the color customization feature, we have also added the ability to delete layers directly from the application.
+-  This feature is designed to streamline the workflow for users who need to remove layers from their projects.
+
+#### Delete Tool
+
+- The layer deletion feature is accessible through a delete tool, which is conveniently located within the tool box attached to the selected layer.
+-  This tool is designed to be intuitive and easy to use, allowing users to delete layers with a single click.
+
+#### Tool Box Integration
+
+- The delete tool is seamlessly integrated into the tool box, ensuring that it is always readily available for use.
+-  This integration simplifies the process of managing layers, making it easier for users to maintain their projects and keep their workspace organized.
+
+--- 
